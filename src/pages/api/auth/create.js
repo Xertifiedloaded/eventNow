@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       }
       const newOrganizer = new OrganizerModel({ name, email, password });
       await newOrganizer.save();
-      const token = jwt.sign({ id: newOrganizer._id }, "jdjjdsnjdcjnieiwow", {
+      const token = jwt.sign({ id: newOrganizer._id }, process.env.JWT_SECRET, {
         expiresIn: "1d",
       });
       res.status(201).json({ success: true, token });

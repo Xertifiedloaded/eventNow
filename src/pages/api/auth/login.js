@@ -13,11 +13,12 @@ export default async function handler(req, res) {
       if (!organizer) {
         return res.status(400).json({ message: "Invalid credentials" });
       }
+      
       const isMatch = await bcrypt.compare(password, organizer.password);
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid credentials" });
       }
-      const token = jwt.sign({ id: organizer._id }, "jdjjdsnjdcjnieiwow", {
+      const token = jwt.sign({ id: organizer._id }, process.env.JWT_SECRET, {
         expiresIn: "1d",
       });
 

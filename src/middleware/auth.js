@@ -7,7 +7,7 @@ export const verifyToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, "jdjjdsnjdcjnieiwow");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.organizerId = decoded.id;
     next();
   } catch (error) {
