@@ -1,26 +1,27 @@
-import databaseConnection from "@/config/database";
-import OrganizerModel from "@/models/OrganizerModel";
-import jwt from "jsonwebtoken";
+import databaseConnection from "@/config/database"
+import { generateToken } from "@/middleware/JsonWebToken"
+import OrganizerModel from "@/models/OrganizerModel"
 
 export default async function handler(req, res) {
-  await databaseConnection();
+  await databaseConnection()
   if (req.method === "POST") {
-    const { name, email, password } = req.body;
+    const { name, email, password } = req.body
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" })
+    }
     try {
-      const organizerExists = await OrganizerModel.findOne({ email });
+      const organizerExists = await OrganizerModel.findOne({ email })
       if (organizerExists) {
-        return res.status(400).json({ message: "Organizer already exists" });
+        return res.status(400).json({ message: "Organizer already exists" })
       }
-      const newOrganizer = new OrganizerModel({ name, email, password });
-      await newOrganizer.save();
-      const token = jwt.sign({ id: newOrganizer._id }, process.env.JWT_SECRET, {
-        expiresIn: "1d",
-      });
-      res.status(201).json({ success: true, token });
+      const newOrganizer = new OrganizerModel({ name, email, password })
+      await newOrganizer.save()
+      generateToken(newOrganizer)
+      res.status(201).json({ success: true, token })
     } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+      res.status(500).json({ success: false, error: error.message })
     }
   } else {
-    res.status(405).json({ message: "Method not allowed" });
+    res.status(405).json({ message: "Method not allowed" })
   }
 }

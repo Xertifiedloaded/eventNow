@@ -3,9 +3,25 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const OrganizerSchema = new mongoose.Schema({
-  name: String,
-  email: { type: String, unique: true },
-  password: String, 
+  name: {
+    type: String,
+    required: [true, 'Name is required']
+  },
+  email: {
+    type: String,
+    required: [true, 'Email is required'],
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required']
+  },
+  paystackPublicKey: {
+    type: String,
+    unique: true
+  },
   createdAt: { type: Date, default: Date.now },
 });
 
