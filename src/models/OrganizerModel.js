@@ -1,4 +1,3 @@
-
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
@@ -21,6 +20,15 @@ const OrganizerSchema = new mongoose.Schema({
   paystackPublicKey: {
     type: String,
     unique: true
+  },
+  packageType: {
+    type: String,
+    enum: ['free', 'premium'],
+    default: 'free'
+  },
+  eventCount: {
+    type: Number,
+    default: 0
   },
   createdAt: { type: Date, default: Date.now },
 });

@@ -14,7 +14,7 @@ const PaymentVerification = () => {
 
   const verifyPayment = async (reference) => {
     try {
-      const response = await fetch("/api//verify-payment", {
+      const response = await fetch("/api/verify-payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

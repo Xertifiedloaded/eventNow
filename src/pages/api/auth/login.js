@@ -2,7 +2,7 @@ import databaseConnection from "@/config/database"
 import { generateToken } from "@/middleware/JsonWebToken"
 import OrganizerModel from "@/models/OrganizerModel"
 import bcrypt from "bcryptjs"
-import jwt from "jsonwebtoken"
+
 
 export default async function handler(req, res) {
   await databaseConnection()
@@ -22,7 +22,6 @@ export default async function handler(req, res) {
       generateToken(organizer)
       res.status(200).json({
         success: true,
-        token,
         organizer,
         organizerPublicKey: organizer.organizerPublicKey,
       })
