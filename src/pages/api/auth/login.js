@@ -3,7 +3,6 @@ import { generateToken } from "@/middleware/JsonWebToken"
 import OrganizerModel from "@/models/OrganizerModel"
 import bcrypt from "bcryptjs"
 
-
 export default async function handler(req, res) {
   await databaseConnection()
 
@@ -19,10 +18,12 @@ export default async function handler(req, res) {
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid credentials" })
       }
-      generateToken(organizer)
+      const token = generateToken(organizer)
+
       res.status(200).json({
         success: true,
         organizer,
+        token,
         organizerPublicKey: organizer.organizerPublicKey,
       })
     } catch (error) {

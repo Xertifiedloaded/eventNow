@@ -21,18 +21,34 @@ export default async function handler(req, res) {
         imageUrl,
         amount,
       } = req.body;
+      if (
+        !eventName ||
+        !category ||
+        !aboutEvent ||
+        !startDate ||
+        !endDate ||
+        !startTime ||
+        !endTime ||
+        !location ||
+        !description ||
+        !amount
+      ) {
+        return res.status(400).json({ success: false, message: "All fields are required." });
+      }
 
       try {
         const organizer = await OrganizerModel.findById(req.organizerId);
         if (!organizer) {
           return res.status(404).json({ success: false, message: "Organizer not found." });
         }
+
         if (organizer.packageType === "free" && organizer.eventCount >= 5) {
           return res.status(403).json({
             success: false,
             message: "You have reached the free event limit. Please upgrade to a premium package.",
           });
         }
+
         const newEvent = new EventModel({
           eventName,
           organizerId: req.organizerId,
@@ -47,14 +63,13 @@ export default async function handler(req, res) {
           imageUrl,
           amount,
         });
-
         await newEvent.save();
         organizer.eventCount += 1;
         await organizer.save();
-
-        res.status(200).json({ success: true, event: newEvent });
+        res.status(200).json({ success: true, newEvent });
       } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        console.log("Error creating event:", error);
+        res.status(500).json({ success: false, message: "Internal server error." });
       }
     });
   } else {

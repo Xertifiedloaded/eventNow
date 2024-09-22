@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 
 export function TokenVerification(token) {
-  console.log(token);
   
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -11,6 +10,7 @@ export function TokenVerification(token) {
     throw new Error('Invalid token');
   }
 }
+
 
 export function generateToken(user) {
   return jwt.sign(

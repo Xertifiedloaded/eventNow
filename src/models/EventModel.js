@@ -12,7 +12,7 @@ const eventCategories = [
 const EventSchema = new mongoose.Schema({
   eventId: { type: String, default: uuidv4 },
   eventName: { type: String, required: true },
-  organizerId: { type: String, required: true },
+  organizerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Organizer', required: true },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
   startTime: { type: String, required: true },

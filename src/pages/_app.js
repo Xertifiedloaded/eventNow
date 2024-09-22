@@ -1,6 +1,6 @@
 
 import { Poppins } from 'next/font/google'
-// import '../global.css'
+import './globals.css'
 const manrope = Poppins({
   weight: ['200', '300', '400', '600', '700', '800'],
   subsets: ['latin'],

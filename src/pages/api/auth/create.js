@@ -16,8 +16,8 @@ export default async function handler(req, res) {
       }
       const newOrganizer = new OrganizerModel({ name, email, password })
       await newOrganizer.save()
-      generateToken(newOrganizer)
-      res.status(201).json({ success: true,newOrganizer })
+      const token = generateToken(newOrganizer)
+      res.status(201).json({ success: true, newOrganizer, token })
     } catch (error) {
       res.status(500).json({ success: false, error: error.message })
     }
